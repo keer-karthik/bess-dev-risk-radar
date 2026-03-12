@@ -134,10 +134,10 @@ With all four core dimensions on and equal weights, maximum score = 12.
 | Region | P | Q | L | S | **Score** |
 |--------|---|---|---|---|-----------|
 | NYISO G/H/I — Lower Hudson Valley | 3 | 3 | 3 | 3 | **12** |
-| NYISO J — New York City | 3 | 2 | 3 | 3 | **11** |
+| NYISO J — New York City | 2 | 2 | 3 | 3 | **10** |
 | NYISO K — Long Island | 3 | 2 | 2 | 3 | **10** |
-| ERCOT Houston | 2 | 2 | 3 | 3 | **10** |
-| NYISO A–F — Rest of State | 2 | 3 | 2 | 3 | **10** |
+| NYISO A–F — Rest of State | 2 | 3 | 1 | 3 | **9** |
+| ERCOT Houston | 1 | 2 | 3 | 3 | **9** |
 | ERCOT North (DFW) | 1 | 2 | 3 | 3 | **9** |
 | ERCOT West (Permian) | 2 | 3 | 2 | 2 | **9** |
 | ERCOT South (San Antonio) | 1 | 3 | 2 | 2 | **8** |

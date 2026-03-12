@@ -554,10 +554,10 @@ with tab_dashboard:
       <div style="font-size:0.95rem;color:{T['text']};line-height:1.6;">
         <strong>ERCOT South offers the clearest path to COD today</strong> — lowest permitting friction (P=1),
         moderate load growth, and the least active policy uncertainty of all 8 regions screened.
-        NYISO downstate faces a compounding lock: the densest BESS moratoria in the US, Order 2023 cluster
+        NYISO downstate (G/H/I) remains the highest-risk region: 16 active moratoria and bans, Order 2023 cluster
         deposit requirements, and data-centre-driven load growth that raises revenue upside but not buildability.
-        Queue saturation is structural across all regions, but ERCOT North and Houston are differentiated
-        by lower queue/peak ratios (Q=2) — most queued MW will not proceed at historical ERCOT attrition rates.
+        ERCOT North and Houston score Q=2 — their queue/peak ratios (2.3x and 1.1x) sit below the extreme saturation
+        of ERCOT West and South (5.9x and 3.3x), and most queued MW will not proceed at historical attrition rates.
         <span style="color:{T['text_dim']};"> Enable V to see where price volatility justifies taking the harder path.</span>
       </div>
     </div>
@@ -901,6 +901,31 @@ with tab_dashboard:
                     cols[ci].metric(f"{code} — {label}", f"{val:.0f}/3", f"×{wt:.1f}w = {val*wt:.1f}pts")
             cols[len(active_cfg)].metric("Risk Score", f"{region_row['RiskScore']:.1f}")
     
+        _region_id = region_row.get("region_id", "")
+        if _region_id == "NYISO_J":
+            st.markdown(
+                f"<div style='font-size:0.83rem;color:{T['text_dim']};background:{T['bg2']};"
+                f"border-left:3px solid #ff7f0e;padding:8px 12px;border-radius:0 4px 4px 0;"
+                f"margin:4px 0 8px 0;'>"
+                f"<b style='color:{T['text']};'>P score note:</b> EticaAG records only "
+                f"1 <em>proposed</em> (not yet active) ban for Zone J. P=2 reflects NYC's "
+                f"broader permitting environment — FDNY lithium-ion siting rules, dense community "
+                f"board opposition, and urban zoning constraints that exist outside formal "
+                f"restriction databases.</div>",
+                unsafe_allow_html=True,
+            )
+        elif _region_id == "NYISO_ABCDEF":
+            st.markdown(
+                f"<div style='font-size:0.83rem;color:{T['text_dim']};background:{T['bg2']};"
+                f"border-left:3px solid {T['primary']};padding:8px 12px;border-radius:0 4px 4px 0;"
+                f"margin:4px 0 8px 0;'>"
+                f"<b style='color:{T['text']};'>P score note:</b> 8 active restrictions "
+                f"across Zones A–F, but spread over all of upstate NY. Geographic dispersion "
+                f"reduces effective development risk relative to the same count in a small metro "
+                f"area — hence P=2 rather than P=3.</div>",
+                unsafe_allow_html=True,
+            )
+
         with st.expander("Show raw metrics"):
             raw_items = {
                 "Queued BESS (MW)": f"{int(region_row.get('queued_bess_mw', 0)):,}" if pd.notna(region_row.get("queued_bess_mw")) else "N/A",
