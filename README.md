@@ -139,7 +139,7 @@ With all four core dimensions on and equal weights, maximum score = 12.
 | NYISO A–F — Rest of State | 2 | 3 | 1 | 3 | **9** |
 | ERCOT Houston | 1 | 2 | 3 | 3 | **9** |
 | ERCOT North (DFW) | 1 | 2 | 3 | 3 | **9** |
-| ERCOT West (Permian) | 2 | 3 | 2 | 2 | **9** |
+| ERCOT West (Permian) | 1 | 3 | 2 | 2 | **8** |
 | ERCOT South (San Antonio) | 1 | 3 | 2 | 2 | **8** |
 
 ---

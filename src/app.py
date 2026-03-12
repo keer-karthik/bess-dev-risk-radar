@@ -552,11 +552,12 @@ with tab_dashboard:
         Key finding
       </div>
       <div style="font-size:0.95rem;color:{T['text']};line-height:1.6;">
-        <strong>ERCOT South offers the clearest path to COD today</strong> — lowest permitting friction (P=1),
-        moderate load growth, and the least active policy uncertainty of all 8 regions screened.
+        <strong>ERCOT South and ERCOT West are jointly the lowest-risk regions at 8</strong> — both score P=1, Q=3, L=2, S=2.
+        ERCOT South has zero bans on record; ERCOT West's single rural county ban (Gillespie) is treated as immaterial
+        to the broader Permian Basin development zone.
         NYISO downstate (G/H/I) remains the highest-risk region: 16 active moratoria and bans, Order 2023 cluster
         deposit requirements, and data-centre-driven load growth that raises revenue upside but not buildability.
-        ERCOT North and Houston score Q=2 — their queue/peak ratios (2.3x and 1.1x) sit below the extreme saturation
+        ERCOT North and Houston score Q=2 — their queue/peak ratios (2.3x and 1.1x) sit below the extreme queue saturation
         of ERCOT West and South (5.9x and 3.3x), and most queued MW will not proceed at historical attrition rates.
         <span style="color:{T['text_dim']};"> Enable V to see where price volatility justifies taking the harder path.</span>
       </div>
@@ -626,7 +627,8 @@ with tab_dashboard:
     
             with st.expander("Raw underlying metrics"):
                 raw_cols = [
-                    "region_id", "queued_bess_mw", "peak_load_mw", "bess_to_peak_ratio",
+                    "region_id", "P_permitting", "Q_queue", "L_load", "S_policy",
+                    "queued_bess_mw", "peak_load_mw", "bess_to_peak_ratio",
                     "moratoria_count", "has_ban", "forecast_load_growth_pct", "has_dc_cluster",
                     "policy_flags",
                 ]
@@ -923,6 +925,37 @@ with tab_dashboard:
                 f"across Zones A–F, but spread over all of upstate NY. Geographic dispersion "
                 f"reduces effective development risk relative to the same count in a small metro "
                 f"area — hence P=2 rather than P=3.</div>",
+                unsafe_allow_html=True,
+            )
+        elif _region_id == "ERCOT_HOU":
+            st.markdown(
+                f"<div style='font-size:0.83rem;color:{T['text_dim']};background:{T['bg2']};"
+                f"border-left:3px solid #ff7f0e;padding:8px 12px;border-radius:0 4px 4px 0;"
+                f"margin:4px 0 8px 0;'>"
+                f"<b style='color:{T['text']};'>P score note:</b> 2 active municipal ordinances "
+                f"on record (Texas City, Katy), but no county-level ban; League City moratorium "
+                f"lifted 2024. Fewer than 3 restrictions with no ban \u2192 P=1.</div>",
+                unsafe_allow_html=True,
+            )
+        elif _region_id == "ERCOT_WEST":
+            st.markdown(
+                f"<div style='font-size:0.83rem;color:{T['text_dim']};background:{T['bg2']};"
+                f"border-left:3px solid #ff7f0e;padding:8px 12px;border-radius:0 4px 4px 0;"
+                f"margin:4px 0 8px 0;'>"
+                f"<b style='color:{T['text']};'>P score note:</b> Gillespie County holds an "
+                f"active BESS ban, but it covers a single rural county within a vast Permian Basin "
+                f"development zone. Expert override: isolated single-county ban treated as "
+                f"immaterial to regional development risk \u2192 P=1.</div>",
+                unsafe_allow_html=True,
+            )
+        elif _region_id == "NYISO_GHI":
+            st.markdown(
+                f"<div style='font-size:0.83rem;color:{T['text_dim']};background:{T['bg2']};"
+                f"border-left:3px solid {T['primary']};padding:8px 12px;border-radius:0 4px 4px 0;"
+                f"margin:4px 0 8px 0;'>"
+                f"<b style='color:{T['text']};'>L score note:</b> 25% forecast load growth "
+                f"lands exactly at the L=2/L=3 boundary. The presence of a data-centre cluster "
+                f"tips the score to L=3 (rule: \u226525% growth + DC cluster = L=3).</div>",
                 unsafe_allow_html=True,
             )
 
