@@ -874,7 +874,31 @@ with tab_dashboard:
                 "Data center cluster": "Yes" if region_row.get("has_dc_cluster") else "No",
                 "Policy flags":     str(region_row.get("policy_flags", "—")),
             }
-            st.table(pd.DataFrame(raw_items.items(), columns=["Metric", "Value"]).set_index("Metric"))
+            raw_df = pd.DataFrame(raw_items.items(), columns=["Metric", "Value"])
+            header_bg = "#F1F1F1" if theme_choice else T["bg2"]
+            raw_html = (
+                raw_df.style
+                .set_properties(**{"background-color": T["bg2"], "color": T["text"]})
+                .set_table_styles([
+                    {"selector": "th", "props": [
+                        ("background-color", header_bg), ("color", T["text"]),
+                        ("padding", "6px 12px"), ("font-size", "0.85em"),
+                        ("font-weight", "600"), ("text-align", "left"),
+                        ("border-bottom", f"2px solid {T['border']}"),
+                    ]},
+                    {"selector": "td", "props": [
+                        ("padding", "5px 12px"),
+                        ("border-bottom", f"1px solid {T['border']}"),
+                    ]},
+                    {"selector": "table", "props": [
+                        ("width", "100%"), ("border-collapse", "collapse"),
+                        ("font-family", "Inter, system-ui, sans-serif"), ("font-size", "0.9em"),
+                    ]},
+                ])
+                .hide(axis="index")
+                .to_html()
+            )
+            st.markdown(f'<div style="overflow-x:auto">{raw_html}</div>', unsafe_allow_html=True)
     
     
     def _region_card(row: pd.Series):
