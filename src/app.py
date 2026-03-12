@@ -552,9 +552,8 @@ with tab_dashboard:
         Key finding
       </div>
       <div style="font-size:0.95rem;color:{T['text']};line-height:1.6;">
-        <strong>ERCOT South and ERCOT West are jointly the lowest-risk regions at 8</strong> — both score P=1, Q=3, L=2, S=2.
-        ERCOT South has zero bans on record; ERCOT West's single rural county ban (Gillespie) is treated as immaterial
-        to the broader Permian Basin development zone.
+        <strong>ERCOT South offers the clearest path to COD today</strong> — lowest permitting friction (P=1),
+        moderate load growth, and the least active policy uncertainty of all 8 regions screened.
         NYISO downstate (G/H/I) remains the highest-risk region: 16 active moratoria and bans, Order 2023 cluster
         deposit requirements, and data-centre-driven load growth that raises revenue upside but not buildability.
         ERCOT North and Houston score Q=2 — their queue/peak ratios (2.3x and 1.1x) sit below the extreme queue saturation
@@ -943,9 +942,9 @@ with tab_dashboard:
                 f"border-left:3px solid #ff7f0e;padding:8px 12px;border-radius:0 4px 4px 0;"
                 f"margin:4px 0 8px 0;'>"
                 f"<b style='color:{T['text']};'>P score note:</b> Gillespie County holds an "
-                f"active BESS ban, but it covers a single rural county within a vast Permian Basin "
-                f"development zone. Expert override: isolated single-county ban treated as "
-                f"immaterial to regional development risk \u2192 P=1.</div>",
+                f"active BESS ban — the only active ban in the ERCOT footprint. Zero moratoriums "
+                f"elsewhere in the Permian Basin zone, but the county-level ban is real and "
+                f"distinguishes ERCOT West from the three fully clear ERCOT regions \u2192 P=2.</div>",
                 unsafe_allow_html=True,
             )
         elif _region_id == "NYISO_GHI":
