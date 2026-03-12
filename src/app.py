@@ -1177,7 +1177,7 @@ in permitting, stuck in the queue, or hit by policy changes, even when the reven
   <li><strong>S – Policy risk:</strong> how much active rule changes could affect projects or revenues.</li>
 </ul>
 <p>An optional <strong>V – price volatility</strong> layer shows where price swings create extra revenue opportunity + uncertainty,
-but V is kept separate from core development risk.</p>
+but V is kept separate from core development risk. When V is selected, the dashboard also surfaces a <strong>Risk vs. Revenue Opportunity</strong> scatter — letting you see which regions combine manageable development risk with high price volatility, and where those two forces pull in opposite directions.</p>
 </div>""", unsafe_allow_html=True)
 
     with st.expander("What I built — and what I didn't"):
