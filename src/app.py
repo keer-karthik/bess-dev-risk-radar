@@ -219,7 +219,12 @@ st.markdown(
         background-color: {"#E2BCBC" if theme_choice else "#292929"} !important;
     }}
 
-    /* Selectbox / dropdown */
+    /* Selectbox / dropdown — label */
+    [data-testid="stSelectbox"] label,
+    [data-testid="stSelectbox"] label * {{
+        color: {T['text']} !important;
+    }}
+    /* Selectbox / dropdown — widget */
     [data-testid="stSelectbox"] > div > div,
     [data-testid="stSelectbox"] [data-baseweb="select"] > div {{
         background-color: {"#FFFFFF" if theme_choice else T["bg2"]} !important;
@@ -240,6 +245,18 @@ st.markdown(
     }}
     [data-baseweb="popover"] li:hover {{
         background-color: {"#ffffff" if theme_choice else "rgba(255,255,255,0.08)"} !important;
+    }}
+
+    /* Tabs */
+    [data-testid="stTabs"] [role="tab"] {{
+        color: {T['text_dim']} !important;
+        font-family: "Inter", system-ui, sans-serif !important;
+    }}
+    [data-testid="stTabs"] [role="tab"][aria-selected="true"] {{
+        color: {T['text']} !important;
+    }}
+    [data-testid="stTabs"] [role="tab"]:hover {{
+        color: {T['text']} !important;
     }}
 
     /* Dividers */
