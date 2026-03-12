@@ -234,7 +234,7 @@ Filter to NYISO only to compare zones within New York; filter to ERCOT only to c
 ## Limitations
 
 - **Directional screening tool**, not a bankable model. Scores are researcher-assigned within P/L/S dimensions using the sources above.
-- **NYISO Q** uses the January 2026 queue snapshot (Interconnection Queue + Cluster Projects sheets combined). 583 projects totalling ~82 GW have been withdrawn since the queue opened; the 83 remaining active ES projects total ~11 GW. NYISO_J (NYC) scores Q=2 due to its larger peak load absorbing the queue; all other NYISO zones score Q=3.
+- **NYISO Q** uses the January 2026 queue snapshot (Interconnection Queue + Cluster Projects sheets combined). 583 projects totalling ~82 GW have been withdrawn since the queue opened; the 83 remaining active ES projects total ~11 GW. NYISO_J (NYC) and NYISO_K (Long Island) score Q=2; NYISO_GHI and NYISO_ABCDEF score Q=3.
 - **ERCOT Q** uses the February 2026 GIS Report, which includes all active GIM study-phase projects. Does not filter by study phase or probability of completion.
 - **Q scores**: ISO-specific thresholds applied (NYISO >0.35x = Q=3; ERCOT >3.0x = Q=3). Four regions score Q=2: NYISO_J (0.21x), NYISO_K (0.31x), ERCOT_HOU (1.08x), ERCOT_NORTH (2.32x). ERCOT_WEST (5.90x) and ERCOT_SOUTH (3.32x) score Q=3.
 - **V dimension** requires internet access and `gridstatus` installation. Degrades gracefully to exclusion if unavailable.
