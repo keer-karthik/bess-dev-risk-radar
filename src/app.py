@@ -445,7 +445,7 @@ with tab_dashboard:
     | Code | Dimension | What it captures | Score 1 | Score 2 | Score 3 |
     |------|-----------|-----------------|---------|---------|---------|
     | **P** | Permitting / Social Risk | Moratoria density + active bans | <3 restrictions, no ban | 4–7 restrictions or 1 ban | 8+ restrictions or bans |
-    | **Q** | Queue Stress | Queued BESS MW ÷ zone peak load | ratio <0.15 | ratio 0.15–0.30 | ratio >0.30 |
+    | **Q** | Queue Stress | Queued BESS MW ÷ zone peak load | NYISO <0.15 / ERCOT <0.8 | NYISO 0.15–0.35 / ERCOT 0.8–3.0 | NYISO >0.35 / ERCOT >3.0 |
     | **L** | Load Growth | Forecast demand growth + data center clusters | <15% forecast growth, no cluster | 15–25% or partial cluster | >25% growth + cluster |
     | **S** | Policy Uncertainty | ISC dependence (NYISO), RTC+B rollout (ERCOT) | Stable regulatory framework | One major reform in progress | Multiple reforms + market redesign |
     | **V** | Price Volatility *(optional)* | DAM/RTM price std dev + scarcity hours | Low volatility | Medium | High volatility |
@@ -464,7 +464,7 @@ with tab_dashboard:
     - **V scores** *(when enabled)*: Live via `gridstatus` — NYISO DAM LBMP zonal prices + ERCOT DAM SPP, 14-day lookback
     
     ### Limitations
-    Directional screening tool, not a bankable model. P/L/S scores are researcher-assigned. NYISO_J scores Q=2 (0.21× ratio); all other 7 regions score Q=3. ERCOT queue saturation remains universal (1.1–5.9× peak load).
+    Directional screening tool, not a bankable model. P/L/S scores are researcher-assigned. Q uses ISO-specific thresholds (NYISO queue/peak ratios: 0.21–0.38×; ERCOT: 1.08–5.90×) — a single global threshold would collapse all 8 regions to Q=3. ERCOT queue/peak ratios overstate saturation risk because ERCOT application volumes dropped ~50% in H2 2025; many queued MW will not proceed.
                 """
             )
     
@@ -540,8 +540,31 @@ with tab_dashboard:
     nyiso_regions = df_scored[df_scored["iso"] == "NYISO"]["region_id"].tolist()
     ercot_regions = df_scored[df_scored["iso"] == "ERCOT"]["region_id"].tolist()
     
+    st.markdown(f"""
+    <div style="
+        background:linear-gradient(135deg,{T['bg2']} 0%,{T['bg']} 100%);
+        border-left:4px solid {T['primary']};border-radius:0 8px 8px 0;
+        padding:1rem 1.5rem;margin-bottom:1.25rem;
+        font-family:'Inter',system-ui,sans-serif;
+    ">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;
+                  color:{T['primary']};text-transform:uppercase;margin-bottom:0.4rem;">
+        Key finding
+      </div>
+      <div style="font-size:0.95rem;color:{T['text']};line-height:1.6;">
+        <strong>ERCOT South offers the clearest path to COD today</strong> — lowest permitting friction (P=1),
+        moderate load growth, and the least active policy uncertainty of all 8 regions screened.
+        NYISO downstate faces a compounding lock: the densest BESS moratoria in the US, Order 2023 cluster
+        deposit requirements, and data-centre-driven load growth that raises revenue upside but not buildability.
+        Queue saturation is structural across all regions, but ERCOT North and Houston are differentiated
+        by lower queue/peak ratios (Q=2) — most queued MW will not proceed at historical ERCOT attrition rates.
+        <span style="color:{T['text_dim']};"> Enable V to see where price volatility justifies taking the harder path.</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     col_main, col_bar = st.columns([2, 1], gap="large")
-    
+
     with col_main:
         with st.container(border=True):
             st.markdown("### Step 1 — Compare regions")
@@ -820,7 +843,20 @@ with tab_dashboard:
         dc        = row.get("has_dc_cluster", False)
         l_interp  = f"{growth:.0f}% forecast load growth" + (", DC cluster" if dc else "")
         flags     = str(row.get("policy_flags", "—"))
-        s_interp  = flags
+        # Process risk = affects whether you can interconnect
+        # Market design risk = affects revenues once built
+        _process = {"Order_2023": "Order 2023 cluster study reform (569-day timeline)"}
+        _market  = {
+            "ISC":        "ISC revenue floor",
+            "RTC+B":      "RTC+B co-optimisation",
+            "AS_redesign":"AS market redesign",
+        }
+        flag_list = [f.strip() for f in flags.split(",") if f.strip() and f.strip() != "—"]
+        p_parts = [_process[f] for f in flag_list if f in _process]
+        m_parts = [_market[f]  for f in flag_list if f in _market]
+        process_str = "; ".join(p_parts) if p_parts else "stable"
+        market_str  = "; ".join(m_parts)  if m_parts  else "stable"
+        s_interp = f"Process: {process_str} · Market: {market_str}"
     
         dims = [
             ("P", row.get("P_permitting", 0), p_interp),
@@ -1256,4 +1292,11 @@ those limitations are called out explicitly so it's clear where subjectivity ent
   </li>
 </ul>
 <p>The same map of P/Q/L/S tells a different story depending on your seat – the interface surfaces those views explicitly.</p>
+<p style="margin-top:1.2rem;padding:0.75rem 1rem;border-left:3px solid {T['primary']};background:{T['bg2']};border-radius:0 6px 6px 0;">
+  <strong>Example — ERCOT North (DFW Corridor):</strong> ERCOT LTLF 2025 projects system-wide peak load growing to 139–218 GW by 2030.
+  If the DFW data centre corridor follows its current trajectory, the L score should be treated as directionally understated.
+  Of ~58 GW queued in North, historical ERCOT attrition rates imply perhaps 8–12 GW of realistic COD by 2030 — against a load
+  growth of 30+ GW in North alone, this is a structural supply-demand gap, not just a risk score.
+  A developer with a project already in Phase 2 studies in ERCOT North is sitting on a scarce, hard-to-replicate position.
+</p>
 </div>""", unsafe_allow_html=True)
