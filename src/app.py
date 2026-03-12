@@ -21,7 +21,7 @@ from scoring import apply_scores, fetch_price_volatility
 st.set_page_config(
     page_title="BESS Dev Risk Radar",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # ---------------------------------------------------------------------------
@@ -37,12 +37,12 @@ DARK_THEME = {
     "map_style": "carto-darkmatter",
 }
 LIGHT_THEME = {
-    "bg":       "#f5f5f7",
+    "bg":       "#ffffff",
     "bg2":      "#ffffff",
-    "text":     "#111111",
-    "text_dim": "rgba(0,0,0,0.72)",
+    "text":     "#111827",
+    "text_dim": "rgba(17,24,39,0.70)",
     "primary":  "#4b3bbd",
-    "border":   "rgba(0,0,0,0.10)",
+    "border":   "rgba(0,0,0,0.13)",
     "map_style": "open-street-map",
 }
 
@@ -63,66 +63,7 @@ SPACER = "<div style='height:1.5rem'></div>"
 # Sidebar  — theme toggle first, then ISO filter, then dimension controls
 # ---------------------------------------------------------------------------
 with st.sidebar:
-    theme_choice = st.toggle("Light theme", value=False, key="light_theme")
-
-    st.markdown("---")
-    st.markdown("**ISO Filter**")
-    iso_filter = st.radio(
-        "", ["All", "NYISO", "ERCOT"],
-        horizontal=True, label_visibility="collapsed", key="iso_filter",
-    )
-
-    st.markdown("---")
-    st.markdown("#### Development Risk")
-    st.caption("What can stop a project being built.")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        toggle_P = st.checkbox("P — Permitting", value=True)
-    with col2:
-        weight_P = st.slider("", 0.5, 3.0, 1.0, 0.5, key="w_P",
-                             disabled=not toggle_P, label_visibility="collapsed")
-    st.caption("Moratoria, bans, local pushback.")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        toggle_Q = st.checkbox("Q — Queue Stress", value=True)
-    with col2:
-        weight_Q = st.slider("", 0.5, 3.0, 1.0, 0.5, key="w_Q",
-                             disabled=not toggle_Q, label_visibility="collapsed")
-    st.caption("How crowded the interconnection queue is vs local demand.")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        toggle_L = st.checkbox("L — Load Growth", value=True)
-    with col2:
-        weight_L = st.slider("", 0.5, 3.0, 1.0, 0.5, key="w_L",
-                             disabled=not toggle_L, label_visibility="collapsed")
-    st.caption("How fast electricity demand is growing, especially from data centers.")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        toggle_S = st.checkbox("S — Policy Risk", value=True)
-    with col2:
-        weight_S = st.slider("", 0.5, 3.0, 1.0, 0.5, key="w_S",
-                             disabled=not toggle_S, label_visibility="collapsed")
-    st.caption("How much current rule changes could affect projects or revenues.")
-
-    st.markdown("---")
-    st.markdown("#### Optional Signal")
-    st.caption("Price volatility: how spiky revenues are (opportunity + uncertainty).")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        toggle_V = st.checkbox("V — Price Volatility", value=False,
-                               help="Fetches live price data via gridstatus.")
-    with col2:
-        weight_V = st.slider("", 0.5, 3.0, 1.0, 0.5, key="w_V",
-                             disabled=not toggle_V, label_visibility="collapsed")
-
-    if toggle_V:
-        st.caption("V is a market signal (revenue opportunity + uncertainty), not pure development risk.")
-
+    theme_choice = st.toggle("Light theme", value=True, key="light_theme")
     st.markdown("---")
     st.caption("Scores: 1 = low risk · 2 = medium · 3 = high")
     st.caption("RiskScore = Σ (weight × score) for enabled dimensions")
@@ -139,7 +80,7 @@ st.markdown(
     f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+    
     :root {{
         --background-color: {T['bg']};
         --secondary-background-color: {T['bg2']};
@@ -169,6 +110,16 @@ st.markdown(
     .main .block-container {{
         padding-top: 1rem !important;
         padding-bottom: 2rem !important;
+        background-color: {T['bg']} !important;
+    }}
+
+    /* Widget labels, checkbox + radio text — always readable on themed bg */
+    [data-testid="stCheckbox"] label p,
+    [data-testid="stRadio"] label p,
+    [data-testid="stSlider"] label,
+    [data-testid="stWidgetLabel"] p,
+    .stCheckbox label, .stRadio label {{
+        color: {T['text']} !important;
     }}
 
     /* Headings */
@@ -180,9 +131,21 @@ st.markdown(
         color: {T['text']} !important;
     }}
 
-    /* Bordered containers */
+    /* Bordered containers (plain st.container()) */
     [data-testid="stContainer"] {{
         border-color: {T['border']} !important;
+        background-color: {T['bg2']} !important;
+    }}
+
+    /* Bordered containers with border=True — white boxes on lavender page */
+    [data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stVerticalBlockBorderWrapper"] > div {{
+        background-color: {T['bg2']} !important;
+        border-radius: 8px !important;
+        border: 2px solid {"#239c94" if theme_choice else T['border']} !important;
+        outline: 2px solid {"#c4b8f0" if theme_choice else T['border']} !important;
+    }}
+    [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {{
         background-color: {T['bg2']} !important;
     }}
 
@@ -251,12 +214,23 @@ st.markdown(
     [data-testid="stTabs"] [role="tab"] {{
         color: {T['text_dim']} !important;
         font-family: "Inter", system-ui, sans-serif !important;
+        font-size: 4.0rem !important;
+        font-weight: 500 !important;
+    }}
+    button[role="tab"] p {{
+        font-size: 1.6rem !important;
+        font-weight: 400 !important;
     }}
     [data-testid="stTabs"] [role="tab"][aria-selected="true"] {{
         color: {T['text']} !important;
     }}
     [data-testid="stTabs"] [role="tab"]:hover {{
         color: {T['text']} !important;
+    }}
+
+    /* Radio labels inside permitting expander — muted */
+    [data-testid="stExpander"] [data-testid="stRadio"] label p {{
+        color: {T['text_dim']} !important;
     }}
 
     /* Dividers */
@@ -354,7 +328,7 @@ st.markdown(
                        font-size:0.75rem;font-weight:600;">V — Volatility</span>
           <span style="background:{T['border']};color:{T['text_dim']};padding:3px 11px;
                        border-radius:20px;font-size:0.72rem;">
-            {iso_filter if iso_filter != 'All' else 'NYISO + ERCOT'} · v1.0
+            {st.session_state.get('iso_filter', 'All') if st.session_state.get('iso_filter', 'All') != 'All' else 'NYISO + ERCOT'} · v1.0
           </span>
         </div>
       </div>
@@ -375,60 +349,6 @@ def get_base_data():
 
 df_base, df_perm = get_base_data()
 
-# Fetch V if toggled — use session_state so fetch runs only once per session
-if toggle_V:
-    if "v_data" not in st.session_state:
-        with st.spinner("Fetching price volatility data (14-day lookback)…"):
-            try:
-                st.session_state["v_data"] = fetch_price_volatility(lookback_days=14)
-            except ImportError:
-                st.warning(
-                    "gridstatus not installed. Run `pip install gridstatus>=0.25` to enable V dimension.",
-                )
-                toggle_V = False
-            except Exception as e:
-                st.warning(f"Price data fetch failed ({e}). V dimension excluded.")
-                toggle_V = False
-
-    if toggle_V and "v_data" in st.session_state:
-        df_base = df_base.merge(
-            st.session_state["v_data"][["region_id", "V_volatility"]],
-            on="region_id", how="left"
-        )
-else:
-    st.session_state.pop("v_data", None)
-
-# ---------------------------------------------------------------------------
-# Apply ISO filter + compute scores
-# ---------------------------------------------------------------------------
-if iso_filter != "All":
-    df_view = df_base[df_base["iso"] == iso_filter].copy()
-else:
-    df_view = df_base.copy()
-
-df_scored = apply_scores(
-    df_view,
-    toggle_P=toggle_P, toggle_Q=toggle_Q, toggle_L=toggle_L, toggle_S=toggle_S,
-    toggle_V=toggle_V,
-    weight_P=weight_P, weight_Q=weight_Q, weight_L=weight_L, weight_S=weight_S,
-    weight_V=weight_V,
-)
-
-active_cols = []
-dim_labels = {
-    "P_w": "P Permitting", "Q_w": "Q Queue",
-    "L_w": "L Load",       "S_w": "S Policy", "V_w": "V Volatility",
-}
-if toggle_P: active_cols.append("P_w")
-if toggle_Q: active_cols.append("Q_w")
-if toggle_L: active_cols.append("L_w")
-if toggle_S: active_cols.append("S_w")
-if toggle_V: active_cols.append("V_w")
-
-if not any([toggle_P, toggle_Q, toggle_L, toggle_S, toggle_V]):
-    st.info("All dimensions are off. Enable at least one to see risk scores.")
-
-
 tab_about, tab_dashboard = st.tabs(["About", "Dashboard"])
 
 with tab_dashboard:
@@ -437,7 +357,7 @@ with tab_dashboard:
     # ---------------------------------------------------------------------------
     _exp1, _exp2 = st.columns(2)
     with _exp1:
-        with st.expander("Methodology & data sources"):
+        with st.expander("Methodology & data sources", expanded=False):
             st.markdown(
                 """
     ### Risk Dimensions
@@ -469,7 +389,7 @@ with tab_dashboard:
             )
     
     with _exp2:
-        with st.expander("Raw permitting entries (NY + TX)"):
+        with st.expander("Raw permitting entries (NY + TX)", expanded=False):
             perm_filter_top = st.radio(
                 "Filter by status", ["All", "Active", "Lifted/Expired", "Proposed"],
                 horizontal=True, key="perm_filter_top",
@@ -512,7 +432,233 @@ with tab_dashboard:
             st.caption(f"{len(perm_show_top)} entries shown · Source: EticaAG BESS Restrictions Database")
     
     st.markdown(SPACER, unsafe_allow_html=True)
+
+    # ---------------------------------------------------------------------------
+    # Inline filter controls — ISO + dimension toggles + weight sliders
+    # ---------------------------------------------------------------------------
+    col1, col2, col3, col4, col5, _, col6 = st.columns([1.2, 1, 1, 1, 1, 0.15, 1])
+    with col1:
+        iso_filter = st.radio("ISO", ["All", "NYISO", "ERCOT"], horizontal=False, key="iso_filter")
+    with col2:
+        toggle_P = st.checkbox("P — Permitting", value=True, key="toggle_P")
+    with col3:
+        toggle_Q = st.checkbox("Q — Queue Stress", value=True, key="toggle_Q")
+    with col4:
+        toggle_L = st.checkbox("L — Load Growth", value=True, key="toggle_L")
+    with col5:
+        toggle_S = st.checkbox("S — Policy Risk", value=True, key="toggle_S")
+    with col6:
+        toggle_V = st.checkbox("V — Price Volatility", value=False, key="toggle_V",
+                            help="Fetches live price data via gridstatus.")
+
+    col1b, col2b, col3b, col4b, col5b, _, col6b = st.columns([1.2, 1, 1, 1, 1, 0.15, 1])
+    with col1b:
+        st.caption("Filter by ISO")
+    with col2b:
+        weight_P = st.slider("Weight P", 0.5, 3.0, 1.0, 0.5, key="w_P",
+                            disabled=not toggle_P, label_visibility="collapsed")
+        st.caption("Moratoria, bans")
+    with col3b:
+        weight_Q = st.slider("Weight Q", 0.5, 3.0, 1.0, 0.5, key="w_Q",
+                            disabled=not toggle_Q, label_visibility="collapsed")
+        st.caption("Queue saturation")
+    with col4b:
+        weight_L = st.slider("Weight L", 0.5, 3.0, 1.0, 0.5, key="w_L",
+                            disabled=not toggle_L, label_visibility="collapsed")
+        st.caption("Demand growth")
+    with col5b:
+        weight_S = st.slider("Weight S", 0.5, 3.0, 1.0, 0.5, key="w_S",
+                            disabled=not toggle_S, label_visibility="collapsed")
+        st.caption("Policy reforms")
+    with col6b:
+        weight_V = st.slider("Weight V", 0.5, 3.0, 1.0, 0.5, key="w_V",
+                            disabled=not toggle_V, label_visibility="collapsed")
+        if toggle_V:
+            st.caption("Revenue signal")
+
+    # ---------------------------------------------------------------------------
+    # V data fetch + ISO filter + scoring (moved here so widgets are defined first)
+    # ---------------------------------------------------------------------------
+    if toggle_V:
+        if "v_data" not in st.session_state:
+            with st.spinner("Fetching price volatility data (14-day lookback)…"):
+                try:
+                    st.session_state["v_data"] = fetch_price_volatility(lookback_days=14)
+                except ImportError:
+                    st.warning(
+                        "gridstatus not installed. Run `pip install gridstatus>=0.25` to enable V dimension.",
+                    )
+                    toggle_V = False
+                except Exception as e:
+                    st.warning(f"Price data fetch failed ({e}). V dimension excluded.")
+                    toggle_V = False
+
+        if toggle_V and "v_data" in st.session_state:
+            df_base = df_base.merge(
+                st.session_state["v_data"][["region_id", "V_volatility"]],
+                on="region_id", how="left"
+            )
+    else:
+        st.session_state.pop("v_data", None)
+
+    if iso_filter != "All":
+        df_view = df_base[df_base["iso"] == iso_filter].copy()
+    else:
+        df_view = df_base.copy()
+
+    df_scored = apply_scores(
+        df_view,
+        toggle_P=toggle_P, toggle_Q=toggle_Q, toggle_L=toggle_L, toggle_S=toggle_S,
+        toggle_V=toggle_V,
+        weight_P=weight_P, weight_Q=weight_Q, weight_L=weight_L, weight_S=weight_S,
+        weight_V=weight_V,
+    )
+
+    active_cols = []
+    dim_labels = {
+        "P_w": "P Permitting", "Q_w": "Q Queue",
+        "L_w": "L Load",       "S_w": "S Policy", "V_w": "V Volatility",
+    }
+    if toggle_P: active_cols.append("P_w")
+    if toggle_Q: active_cols.append("Q_w")
+    if toggle_L: active_cols.append("L_w")
+    if toggle_S: active_cols.append("S_w")
+    if toggle_V: active_cols.append("V_w")
+
+    if not any([toggle_P, toggle_Q, toggle_L, toggle_S, toggle_V]):
+        st.info("All dimensions are off. Enable at least one to see risk scores.")
+     # ---------------------------------------------------------------------------
+    # Zone Reference Maps (NYISO / ERCOT only)
+    # ---------------------------------------------------------------------------
+    ASSETS_DIR = Path(__file__).parent.parent / "assets"
     
+    # ---------------------------------------------------------------------------
+    # County FIPS → ISO zone mappings
+    # ---------------------------------------------------------------------------
+    _NYISO_COUNTY_ZONE = {
+        # Zone K — Long Island
+        "36059": "NYISO_K", "36103": "NYISO_K",
+        # Zone J — NYC five boroughs
+        "36005": "NYISO_J", "36047": "NYISO_J", "36061": "NYISO_J",
+        "36081": "NYISO_J", "36085": "NYISO_J",
+        # Zone GHI — Lower Hudson Valley / Catskills
+        "36027": "NYISO_GHI", "36039": "NYISO_GHI", "36071": "NYISO_GHI",
+        "36079": "NYISO_GHI", "36087": "NYISO_GHI", "36105": "NYISO_GHI",
+        "36111": "NYISO_GHI", "36119": "NYISO_GHI",
+    }
+    
+    
+    def _approx_centroid(geometry: dict):
+        gtype = geometry.get("type", "")
+        if gtype == "Polygon":
+            ring = geometry["coordinates"][0]
+        elif gtype == "MultiPolygon":
+            ring = geometry["coordinates"][0][0]
+        else:
+            return 0.0, 0.0
+        lons = [c[0] for c in ring]
+        lats = [c[1] for c in ring]
+        return sum(lons) / len(lons), sum(lats) / len(lats)
+    
+    
+    def _ercot_zone_from_centroid(lon: float, lat: float) -> str:
+        if lon < -100.0:
+            return "ERCOT_WEST"
+        if lon >= -97.0 and lat < 32.5:
+            return "ERCOT_HOU"
+        if lat >= 30.0:
+            return "ERCOT_NORTH"
+        return "ERCOT_SOUTH"
+    
+    
+    @st.cache_data(ttl=86400, show_spinner=False)
+    def _load_county_geojson() -> dict | None:
+        try:
+            import requests
+            url = (
+                "https://raw.githubusercontent.com/plotly/datasets/master/"
+                "geojson-counties-fips.json"
+            )
+            r = requests.get(url, timeout=20)
+            r.raise_for_status()
+            return r.json()
+        except Exception:
+            return None
+    
+    
+    def _render_zone_map(iso: str, scored_df, max_score: float):
+        counties = _load_county_geojson()
+    
+        if counties is None:
+            if iso == "NYISO":
+                st.image(str(ASSETS_DIR / "NYISO-Zones.jpg"), use_container_width=True)
+            else:
+                st.image(str(ASSETS_DIR / "ercot-zones.png"), use_container_width=True)
+            return
+    
+        prefix = "36" if iso == "NYISO" else "48"
+        score_lookup = scored_df.set_index("region_id")["RiskScore"].to_dict()
+        name_lookup  = scored_df.set_index("region_id")["region_name"].to_dict()
+    
+        state_features = []
+        rows = []
+        for feat in counties["features"]:
+            fips = feat["id"]
+            if not fips.startswith(prefix):
+                continue
+            state_features.append(feat)
+    
+            if iso == "NYISO":
+                zone = _NYISO_COUNTY_ZONE.get(fips, "NYISO_ABCDEF")
+            else:
+                lon, lat = _approx_centroid(feat["geometry"])
+                zone = _ercot_zone_from_centroid(lon, lat)
+    
+            rows.append({
+                "fips": fips,
+                "region_id": zone,
+                "RiskScore": score_lookup.get(zone, 0.0),
+                "Zone": name_lookup.get(zone, zone),
+            })
+    
+        if not rows:
+            st.info("No county data found for this ISO.")
+            return
+    
+        state_geojson = {"type": "FeatureCollection", "features": state_features}
+        df_map = pd.DataFrame(rows)
+    
+        center = {"lat": 42.9, "lon": -76.0} if iso == "NYISO" else {"lat": 31.5, "lon": -99.5}
+        zoom   = 5.5 if iso == "NYISO" else 4.6
+    
+        fig = px.choropleth_mapbox(
+            df_map,
+            geojson=state_geojson,
+            locations="fips",
+            featureidkey="id",
+            color="RiskScore",
+            color_continuous_scale="RdYlGn_r",
+            range_color=[0, max_score],
+            mapbox_style=T["map_style"],
+            zoom=zoom,
+            center=center,
+            opacity=0.6,
+            hover_name="Zone",
+            hover_data={"RiskScore": ":.1f", "region_id": True, "fips": False},
+            labels={"RiskScore": "Risk Score"},
+            height=440,
+        )
+        fig.update_layout(
+            margin={"l": 0, "r": 0, "t": 0, "b": 0},
+            paper_bgcolor=T["bg2"],
+            font={"color": T["text"], "family": "Inter, system-ui, sans-serif"},
+            coloraxis_colorbar={
+                "title": {"text": "Risk Score", "font": {"color": T["text"]}},
+                "tickfont": {"color": T["text"]},
+            },
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
     # ---------------------------------------------------------------------------
     # Row 1: ranked table (left 2/3) + metrics + bar chart (right 1/3)
     # ---------------------------------------------------------------------------
@@ -542,7 +688,7 @@ with tab_dashboard:
     
     st.markdown(f"""
     <div style="
-        background:linear-gradient(135deg,{T['bg2']} 0%,{T['bg']} 100%);
+        background:{"#ede9f8" if theme_choice else f"linear-gradient(135deg,{T['bg2']} 0%,{T['bg']} 100%)"};
         border-left:4px solid {T['primary']};border-radius:0 8px 8px 0;
         padding:1rem 1.5rem;margin-bottom:1.25rem;
         font-family:'Inter',system-ui,sans-serif;
@@ -563,6 +709,13 @@ with tab_dashboard:
     </div>
     """, unsafe_allow_html=True)
 
+    if iso_filter in ("NYISO", "ERCOT"):
+        label = "New York (NYISO)" if iso_filter == "NYISO" else "Texas (ERCOT)"
+        st.divider()
+        st.subheader(f"Zone Reference Map — {label}")
+        with st.spinner("Loading zone boundaries…"):
+            _render_zone_map(iso_filter, df_scored, max_possible)
+            
     col_main, col_bar = st.columns([2, 1], gap="large")
 
     with col_main:
@@ -624,7 +777,7 @@ with tab_dashboard:
                 unsafe_allow_html=True,
             )
     
-            with st.expander("Raw underlying metrics"):
+            with st.expander("Raw underlying metrics", expanded=False):
                 raw_cols = [
                     "region_id", "P_permitting", "Q_queue", "L_load", "S_policy",
                     "queued_bess_mw", "peak_load_mw", "bess_to_peak_ratio",
@@ -958,7 +1111,7 @@ with tab_dashboard:
                 unsafe_allow_html=True,
             )
 
-        with st.expander("Show raw metrics"):
+        with st.expander("Show raw metrics", expanded=False):
             raw_items = {
                 "Queued BESS (MW)": f"{int(region_row.get('queued_bess_mw', 0)):,}" if pd.notna(region_row.get("queued_bess_mw")) else "N/A",
                 "Queue/Peak ratio": f"{region_row.get('bess_to_peak_ratio', 0):.2f}x",
@@ -1102,145 +1255,8 @@ with tab_dashboard:
     
         st.markdown(SPACER, unsafe_allow_html=True)
     
-    # ---------------------------------------------------------------------------
-    # Zone Reference Maps (NYISO / ERCOT only)
-    # ---------------------------------------------------------------------------
-    ASSETS_DIR = Path(__file__).parent.parent / "assets"
-    
-    # ---------------------------------------------------------------------------
-    # County FIPS → ISO zone mappings
-    # ---------------------------------------------------------------------------
-    _NYISO_COUNTY_ZONE = {
-        # Zone K — Long Island
-        "36059": "NYISO_K", "36103": "NYISO_K",
-        # Zone J — NYC five boroughs
-        "36005": "NYISO_J", "36047": "NYISO_J", "36061": "NYISO_J",
-        "36081": "NYISO_J", "36085": "NYISO_J",
-        # Zone GHI — Lower Hudson Valley / Catskills
-        "36027": "NYISO_GHI", "36039": "NYISO_GHI", "36071": "NYISO_GHI",
-        "36079": "NYISO_GHI", "36087": "NYISO_GHI", "36105": "NYISO_GHI",
-        "36111": "NYISO_GHI", "36119": "NYISO_GHI",
-    }
-    
-    
-    def _approx_centroid(geometry: dict):
-        gtype = geometry.get("type", "")
-        if gtype == "Polygon":
-            ring = geometry["coordinates"][0]
-        elif gtype == "MultiPolygon":
-            ring = geometry["coordinates"][0][0]
-        else:
-            return 0.0, 0.0
-        lons = [c[0] for c in ring]
-        lats = [c[1] for c in ring]
-        return sum(lons) / len(lons), sum(lats) / len(lats)
-    
-    
-    def _ercot_zone_from_centroid(lon: float, lat: float) -> str:
-        if lon < -100.0:
-            return "ERCOT_WEST"
-        if lon >= -97.0 and lat < 32.5:
-            return "ERCOT_HOU"
-        if lat >= 30.0:
-            return "ERCOT_NORTH"
-        return "ERCOT_SOUTH"
-    
-    
-    @st.cache_data(ttl=86400, show_spinner=False)
-    def _load_county_geojson() -> dict | None:
-        try:
-            import requests
-            url = (
-                "https://raw.githubusercontent.com/plotly/datasets/master/"
-                "geojson-counties-fips.json"
-            )
-            r = requests.get(url, timeout=20)
-            r.raise_for_status()
-            return r.json()
-        except Exception:
-            return None
-    
-    
-    def _render_zone_map(iso: str, scored_df, max_score: float):
-        counties = _load_county_geojson()
-    
-        if counties is None:
-            if iso == "NYISO":
-                st.image(str(ASSETS_DIR / "NYISO-Zones.jpg"), use_container_width=True)
-            else:
-                st.image(str(ASSETS_DIR / "ercot-zones.png"), use_container_width=True)
-            return
-    
-        prefix = "36" if iso == "NYISO" else "48"
-        score_lookup = scored_df.set_index("region_id")["RiskScore"].to_dict()
-        name_lookup  = scored_df.set_index("region_id")["region_name"].to_dict()
-    
-        state_features = []
-        rows = []
-        for feat in counties["features"]:
-            fips = feat["id"]
-            if not fips.startswith(prefix):
-                continue
-            state_features.append(feat)
-    
-            if iso == "NYISO":
-                zone = _NYISO_COUNTY_ZONE.get(fips, "NYISO_ABCDEF")
-            else:
-                lon, lat = _approx_centroid(feat["geometry"])
-                zone = _ercot_zone_from_centroid(lon, lat)
-    
-            rows.append({
-                "fips": fips,
-                "region_id": zone,
-                "RiskScore": score_lookup.get(zone, 0.0),
-                "Zone": name_lookup.get(zone, zone),
-            })
-    
-        if not rows:
-            st.info("No county data found for this ISO.")
-            return
-    
-        state_geojson = {"type": "FeatureCollection", "features": state_features}
-        df_map = pd.DataFrame(rows)
-    
-        center = {"lat": 42.9, "lon": -76.0} if iso == "NYISO" else {"lat": 31.5, "lon": -99.5}
-        zoom   = 5.5 if iso == "NYISO" else 4.6
-    
-        fig = px.choropleth_mapbox(
-            df_map,
-            geojson=state_geojson,
-            locations="fips",
-            featureidkey="id",
-            color="RiskScore",
-            color_continuous_scale="RdYlGn_r",
-            range_color=[0, max_score],
-            mapbox_style=T["map_style"],
-            zoom=zoom,
-            center=center,
-            opacity=0.6,
-            hover_name="Zone",
-            hover_data={"RiskScore": ":.1f", "region_id": True, "fips": False},
-            labels={"RiskScore": "Risk Score"},
-            height=440,
-        )
-        fig.update_layout(
-            margin={"l": 0, "r": 0, "t": 0, "b": 0},
-            paper_bgcolor=T["bg2"],
-            font={"color": T["text"], "family": "Inter, system-ui, sans-serif"},
-            coloraxis_colorbar={
-                "title": {"text": "Risk Score", "font": {"color": T["text"]}},
-                "tickfont": {"color": T["text"]},
-            },
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    
-    
-    if iso_filter in ("NYISO", "ERCOT"):
-        label = "New York (NYISO)" if iso_filter == "NYISO" else "Texas (ERCOT)"
-        st.divider()
-        st.subheader(f"Zone Reference Map — {label}")
-        with st.spinner("Loading zone boundaries…"):
-            _render_zone_map(iso_filter, df_scored, max_possible)
+   
+
     
     # ---------------------------------------------------------------------------
     # Footer
@@ -1253,7 +1269,7 @@ with tab_dashboard:
 
 
 with tab_about:
-    with st.expander("What problem is this solving?", expanded=True):
+    with st.expander("What problem is this solving?", expanded=False):
         st.markdown(f"""<div class="about-body">
 <p>Revenue models for BESS are already sophisticated – tools like Modo's forecasts go deep on dispatch and revenues.
 What's still under-exposed is <strong>development-side risk</strong>: the chance a project never reaches COD because it gets blocked
