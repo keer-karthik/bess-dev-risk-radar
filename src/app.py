@@ -1269,7 +1269,9 @@ with tab_dashboard:
 
 
 with tab_about:
-    st.video(str(Path(__file__).parent.parent / "assets" / "tool_walkthrough.mp4"))
+    _vid_col, _ = st.columns([1, 1])
+    with _vid_col:
+        st.video(str(Path(__file__).parent.parent / "assets" / "tool_walkthrough.mp4"))
 
     with st.expander("What problem is this solving?", expanded=False):
         st.markdown(f"""<div class="about-body">
