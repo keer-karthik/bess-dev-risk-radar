@@ -1269,6 +1269,8 @@ with tab_dashboard:
 
 
 with tab_about:
+    st.video(str(Path(__file__).parent.parent / "assets" / "tool_walkthrough.mp4"))
+
     with st.expander("What problem is this solving?", expanded=False):
         st.markdown(f"""<div class="about-body">
 <p>Revenue models for BESS are already sophisticated – tools like Modo's forecasts go deep on dispatch and revenues.
