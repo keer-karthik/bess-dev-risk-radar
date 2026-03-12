@@ -1269,7 +1269,7 @@ with tab_dashboard:
 
 
 with tab_about:
-    _vid_col, _ = st.columns([1, 1])
+    _, _vid_col, _ = st.columns([1, 2, 1])
     with _vid_col:
         st.video(str(Path(__file__).parent.parent / "assets" / "tool_walkthrough.mp4"))
 
