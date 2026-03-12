@@ -2,6 +2,7 @@
 
 **Tool to screen battery storage projects by development-side risk before revenue modelling — across NYISO and ERCOT.**
 
+_link to the tool -- https://bess-dev-risk-radar.streamlit.app/_
 ---
 
 ## The Problem
@@ -10,7 +11,7 @@ Revenue modelling for BESS is already a crowded, sophisticated space: tools like
 
 This tool asks:
 
-“Given two identical 100 MW batteries in different regions, why is one much more likely to get built than the other — and how can we see that risk clearly before we start revenue modelling?”
+_“Given two identical 100 MW batteries in different regions, why is one much more likely to get built than the other — and how can we see that risk clearly before we start revenue modelling?”_
 
 By turning permitting, queue saturation, load growth, and policy churn into simple, comparable scores, I wanted to:
 - Make those “invisible” risks visible in one place.
@@ -49,7 +50,7 @@ The dimensions deliberately mirror themes in current NYISO/ERCOT storage work:
 
 Throughout the development process, I used Claude as an AI assistant for initial ideation, cross-referencing Modo's public research themes, and surfacing relevant market data sources. I then transitioned to Claude Code for implementation, following a test-driven development workflow where I validated outputs and manually reviewed all coding logic before accepting generated code. At each stage I maintained clear guardrails by verifying data sources independently, and ensuring the methodology was transparent and reproducible rather than treating AI output as ground truth ~
 
-Lastly, thank you for the opportunity to scope and build this tool, and for considering me for a further position with Modo Energy. I’ve included my CV in this repository so you can see more detail on my background and experience!
+_Lastly, thank you for the opportunity to scope and build this tool, and for considering me for a further position with Modo Energy. I’ve included my resume in this repository so you can see more detail on my background and experience!_
 
 ---
 This tool provides a transparent and interactive **development risk radar** for BESS developers, investors, and analysts. It counter-weights pure revenue optimism with a structured view of the obstacles between "project proposed" and "project operational."
