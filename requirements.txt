@@ -1,0 +1,7 @@
+pandas>=2.0
+plotly>=5.0
+streamlit>=1.30
+openpyxl>=3.1
+matplotlib>=3.7
+geopandas>=0.14
+gridstatus>=0.25

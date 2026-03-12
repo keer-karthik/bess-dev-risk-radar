@@ -1,0 +1,6 @@
+jurisdiction,state,action,status,start_date,end_date,ercot_region,notes
+Gillespie County,TX,Ban,Active,2025-02-24,,ERCOT_WEST,County commissioners passed permanent ban on utility-scale BESS; Hill Country opposition
+Texas City,TX,Ordinance,Active,2025-06-25,,ERCOT_HOU,City ordinance restricting BESS siting near residential areas; industrial port concerns
+Katy (City),TX,Ordinance,Active,2025-01-27,,ERCOT_HOU,Setback and permitting requirements for battery storage; suburban Houston
+Bryan (City),TX,Ordinance,Active,2024-07-09,,ERCOT_NORTH,Ordinance requiring additional fire safety review for BESS projects over 1 MW
+League City,TX,Moratorium,Lifted,2024-03-01,2024-09-01,ERCOT_HOU,6-month moratorium lifted after fire safety study completed; permits resumed

@@ -1,0 +1,36 @@
+jurisdiction,state,action,status,start_date,end_date,nyiso_zone,notes
+Glen Cove (City),NY,Moratorium,Active,2023-06-01,,K,Local moratorium on BESS facilities
+Hempstead (Town),NY,Moratorium,Active,2023-09-01,,K,Town-wide moratorium pending zoning study
+North Hempstead (Town),NY,Moratorium,Active,2024-01-01,,K,6-month renewable moratorium
+Islip (Town),NY,Moratorium,Active,2023-11-01,,K,BESS moratorium; part of broader energy storage review
+Oyster Bay (Town),NY,Moratorium,Active,2024-03-01,,K,Moratorium pending fire safety code update
+Babylon (Town),NY,Ban,Active,2024-06-01,,K,Outright ban on utility-scale BESS in residential zones
+Smithtown (Town),NY,Moratorium,Active,2024-02-01,,K,18-month moratorium on new BESS permits
+Brookhaven (Town),NY,Moratorium,Active,2023-08-01,,K,Extended moratorium; linked to ongoing BESS fire safety review
+Southampton (Town),NY,Ban,Active,2023-05-01,,K,Permanent ban in residential and agricultural zones
+Southold (Town),NY,Ban,Active,2024-04-01,,K,Town board passed ban following community opposition
+Cortlandt (Town),NY,Moratorium,Active,2023-10-01,,GHI,Moratorium under environmental review
+Mount Pleasant (Town),NY,Ban,Active,2024-01-01,,GHI,Zoning ban on utility-scale energy storage
+Harrison (Town),NY,Moratorium,Active,2024-05-01,,GHI,12-month moratorium; fire safety concerns cited
+Yorktown (Town),NY,Ban,Active,2023-07-01,,GHI,Town board voted ban after resident opposition
+New Castle (Town),NY,Moratorium,Active,2024-03-01,,GHI,Moratorium pending updated zoning code
+Carmel (Town),NY,Ban,Active,2024-02-01,,GHI,Permanent ban on utility-scale BESS projects
+Kent (Town),NY,Moratorium,Active,2024-06-01,,GHI,6-month moratorium; extensible to 18 months
+Warwick (Town),NY,Moratorium,Active,2023-12-01,,GHI,Moratorium following community opposition to proposed project
+Village of Warwick,NY,Moratorium,Active,2024-01-01,,GHI,Village-level moratorium separate from town action
+Chester (Town),NY,Moratorium,Active,2024-04-01,,GHI,Moratorium pending comprehensive plan update
+NY Assembly District 64,NY,Ban (Proposed),Proposed,2024-09-01,,J,State Assembly bill to ban BESS in certain NYC districts
+Clifton Park (Town),NY,Moratorium,Active,2024-07-01,,F,Moratorium on large-scale battery installations
+Rotterdam (Town),NY,Moratorium,Active,2024-08-01,,F,12-month moratorium; Capital District cluster
+Berne (Town),NY,Moratorium,Active,2024-05-01,,E,Moratorium pending town energy storage study
+Salem (Town),NY,Moratorium,Active,2025-10-01,2026-04-01,E,6-month moratorium; extensible to 18 months per local law (Washington County)
+Watson (Town),NY,Moratorium,Active,2024-06-01,,C,Moratorium on battery storage in rural agricultural zone
+Sherburne (Town),NY,Moratorium,Active,2024-03-01,,C,12-month moratorium on utility-scale storage
+Newfane (Town),NY,Moratorium,Active,2024-09-01,,A,Moratorium pending zoning board review
+Day (Town),NY,Moratorium,Active,2024-11-01,,F,Short-term moratorium following neighboring town bans
+Cairo (Town),NY,Moratorium,Active,2024-07-01,,GHI,Hudson Valley moratorium near zone boundary
+Athens (Town),NY,Moratorium,Active,2024-08-01,,GHI,Moratorium on BESS pending environmental review
+Gardiner (Town),NY,Moratorium,Active,2024-10-01,,GHI,Moratorium following opposition to proposed Catskill corridor project
+Hurley (Town),NY,Moratorium,Active,2024-06-01,,GHI,Ulster County BESS restriction
+Plattekill (Town),NY,Moratorium,Active,2024-09-01,,GHI,Moratorium on utility-scale storage
+Montgomery (Town),NY,Moratorium,Active,2024-04-01,,GHI,12-month renewable moratorium
