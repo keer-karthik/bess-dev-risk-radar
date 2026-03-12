@@ -80,7 +80,7 @@ This tool provides a transparent and interactive **development risk radar** for 
 - Score 2: ratio 0.15–0.30
 - Score 1: ratio < 0.15
 
-> **Key finding**: All 8 regions score Q=3. Real data shows NYISO ratios of 0.45–1.36x peak load (NYISO Interconnection Queue: 19+ GW queued system-wide); ERCOT ratios of 1.0–5.9x (GIS Report: 187 GW queued across 4 regions). Queue saturation is a system-wide condition. Differentiation comes from P, L, and S. [S4][S5][S6][S9][S11][S12][S13][S16][S19][S20]
+> **Key finding**: Queue saturation is structural across all regions, but ISO-specific thresholds reveal real differentiation. NYISO ratios range 0.21–0.38x peak load; ERCOT ratios 1.08–5.90x — a 28x spread that a single global threshold collapses to Q=3 for everyone. Using ISO-aware cutoffs (NYISO >0.35x = Q=3; ERCOT >3.0x = Q=3), four regions score Q=2: NYISO_J (0.21x), NYISO_K (0.31x), ERCOT_HOU (1.08x), ERCOT_NORTH (2.32x). Differentiation within Q, and overall, still comes primarily from P, L, and S. [S4][S5][S6][S9][S11][S12][S13][S16][S19][S20]
 
 **L — Load Growth**
 - Score 3: >25% forecast demand growth AND data center cluster present
@@ -134,11 +134,11 @@ With all four core dimensions on and equal weights, maximum score = 12.
 | Region | P | Q | L | S | **Score** |
 |--------|---|---|---|---|-----------|
 | NYISO G/H/I — Lower Hudson Valley | 3 | 3 | 3 | 3 | **12** |
-| NYISO J — New York City | 3 | 3 | 3 | 3 | **12** |
-| NYISO K — Long Island | 3 | 3 | 2 | 3 | **11** |
-| ERCOT Houston | 2 | 3 | 3 | 3 | **11** |
-| ERCOT North (DFW) | 1 | 3 | 3 | 3 | **10** |
+| NYISO J — New York City | 3 | 2 | 3 | 3 | **11** |
+| NYISO K — Long Island | 3 | 2 | 2 | 3 | **10** |
+| ERCOT Houston | 2 | 2 | 3 | 3 | **10** |
 | NYISO A–F — Rest of State | 2 | 3 | 2 | 3 | **10** |
+| ERCOT North (DFW) | 1 | 2 | 3 | 3 | **9** |
 | ERCOT West (Permian) | 2 | 3 | 2 | 2 | **9** |
 | ERCOT South (San Antonio) | 1 | 3 | 2 | 2 | **8** |
 
@@ -236,7 +236,7 @@ Filter to NYISO only to compare zones within New York; filter to ERCOT only to c
 - **Directional screening tool**, not a bankable model. Scores are researcher-assigned within P/L/S dimensions using the sources above.
 - **NYISO Q** uses the January 2026 queue snapshot (Interconnection Queue + Cluster Projects sheets combined). 583 projects totalling ~82 GW have been withdrawn since the queue opened; the 83 remaining active ES projects total ~11 GW. NYISO_J (NYC) scores Q=2 due to its larger peak load absorbing the queue; all other NYISO zones score Q=3.
 - **ERCOT Q** uses the February 2026 GIS Report, which includes all active GIM study-phase projects. Does not filter by study phase or probability of completion.
-- **Q scores**: NYISO_J = 2; all other 7 regions = 3. ERCOT queue saturation remains universal (1.1–5.9× peak load ratios).
+- **Q scores**: ISO-specific thresholds applied (NYISO >0.35x = Q=3; ERCOT >3.0x = Q=3). Four regions score Q=2: NYISO_J (0.21x), NYISO_K (0.31x), ERCOT_HOU (1.08x), ERCOT_NORTH (2.32x). ERCOT_WEST (5.90x) and ERCOT_SOUTH (3.32x) score Q=3.
 - **V dimension** requires internet access and `gridstatus` installation. Degrades gracefully to exclusion if unavailable.
 - P and S scores are manually encoded from document review; reasonable analysts could score ±1 on individual regions.
 
