@@ -5,3 +5,4 @@ openpyxl>=3.1
 matplotlib>=3.7
 geopandas>=0.14
 gridstatus>=0.25
+lxml==4.9.4
